@@ -15,7 +15,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       CPF: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       busId: {
         type: Sequelize.INTEGER,

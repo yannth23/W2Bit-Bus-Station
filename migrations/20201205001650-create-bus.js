@@ -10,7 +10,7 @@ module.exports = {
       },
       licensePlate: {
         type: Sequelize.STRING,
-        unique: true,
+        unique: true
       },
       year: {
         type: Sequelize.STRING
