@@ -13,6 +13,8 @@ routes.delete('/bus/:licensePlate', BusController.delete);
 routes.get('/bus/:licensePlate', BusController.getBusByLicensePlate);
 routes.get('/bus/', BusController.getAll);
 
-
+routes.post('/passenger/', PassengerController.create);
+routes.post('/passenger/:CPF', PassengerController.update);
+routes.delete('/passenger/:CPF', PassengerController.delete);
 
 module.exports = routes;

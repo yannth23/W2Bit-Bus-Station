@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
 const {Bus, User} = require('../models');
 
 module.exports = {
@@ -15,7 +13,7 @@ module.exports = {
             if (userId == undefined){
                 return res.send({ 
                     success: false,
-                    data: "the user parameter must be pass"
+                    data: "user parameter must be passed"
                 }); 
             }
             await User.findOne({where:{id: userId}}).then(response => {
@@ -53,7 +51,7 @@ module.exports = {
             });
         });
     },
-    async updateBusByLicensePlate(req,res) {
+    async update(req,res) {
         const {
             year,
             model,
@@ -80,10 +78,8 @@ module.exports = {
                 });
             }
         });
-        
-        
     },
-    async deleteBusByLicensePlate(req,res){
+    async delete(req,res){
         await Bus.findOne({
             where: {
                 licensePlate: req.params.licensePlate
