@@ -15,9 +15,11 @@ const routes = express.Router();
 // const userController = new UserController();
 
 routes.get('/bus/', BusController.getAll);
-routes.get('/bus/getBusByLicensePlate', BusController.getBusByLicensePlate);
-routes.delete('/bus/deleteBusByLicensePlate', BusController.deleteBusByLicensePlate);
+routes.get('/bus/:licensePlate', BusController.getBusByLicensePlate);
+routes.delete('/bus/:licensePlate', BusController.deleteBusByLicensePlate);
 routes.post('/bus/', BusController.create);
+routes.post('/bus/:licensePlate', BusController.updateBusByLicensePlate);
+
 // routes.get('/classes', classesController.index);
 
 // routes.post('/connections', connectionsController.create);
