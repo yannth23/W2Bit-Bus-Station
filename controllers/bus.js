@@ -1,26 +1,44 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op
-const {Bus} = require('../models');
+const {Bus, User} = require('../models');
 
 module.exports = {
-    //todo: validação para ver se o usuário existe
     async create( req, res,) {
         const {
             licensePlate,
             year,
             model,
             seatAmmount,
+            userId
         } = req.body;
         try {
-            const insertedBus = await Bus.create({ 
+            if (userId == undefined){
+                return res.send({ 
+                    success: false,
+                    data: "the user parameter must be pass"
+                }); 
+            }
+            await User.findOne({where:{id: userId}}).then(response => {
+                console.log(response)
+                if(!response){
+                    return res.send({ 
+                        success: false,
+                        data: "User not found"
+                    }); 
+                }
+            });
+
+            await Bus.create({ 
                 licensePlate: licensePlate,
                 year: year,
                 model: model, 
-                seatAmmount: seatAmmount });
-                res.send({ 
-                    success: true,
-                    data: "Bus created"
-                });
+                seatAmmount: seatAmmount,
+                userId: userId
+            });
+            res.send({ 
+                success: true,
+                data: "Bus created"
+            });
         }catch (err){
             return res.status(400).json({
                 error: err
@@ -28,7 +46,7 @@ module.exports = {
         }
     },
     async getAll(req, res) {
-        const result = await Bus.findAll().then(result => {
+        await Bus.findAll().then(result => {
             res.send({ 
                 success: true,
                 data: result
@@ -37,10 +55,9 @@ module.exports = {
     },
     async updateBusByLicensePlate(req,res) {
         const {
-            licensePlate,
             year,
             model,
-            seatAmmount 
+            seatAmmount
         } = req.body;
         await Bus.findOne({
             where: {
@@ -67,7 +84,7 @@ module.exports = {
         
     },
     async deleteBusByLicensePlate(req,res){
-        const busToDelete = await Bus.findOne({
+        await Bus.findOne({
             where: {
                 licensePlate: req.params.licensePlate
             }
@@ -88,7 +105,7 @@ module.exports = {
         });
     },
     async getBusByLicensePlate(req,res){
-        const result = await Bus.findOne({
+        await Bus.findOne({
             where: {
                 licensePlate: req.params.licensePlate
             }
