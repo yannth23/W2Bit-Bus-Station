@@ -17,7 +17,6 @@ module.exports = {
                 }); 
             }
             await User.findOne({where:{id: userId}}).then(response => {
-                console.log(response)
                 if(!response){
                     return res.send({ 
                         success: false,

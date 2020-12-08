@@ -1,7 +1,7 @@
 const {Passenger, Bus} = require('../models');
 
 module.exports = {
-    async create( req, res,) {
+    async create(req, res) {
         const {
             CPF,
             name,
@@ -9,43 +9,52 @@ module.exports = {
             busId
         } = req.body;
         try {
-            if (busId == undefined){
-                return res.send({ 
+            if (busId == undefined) {
+                return res.send({
                     success: false,
                     data: "bus parameter must be passed"
-                }); 
+                });
             }
-            await Bus.findOne({where:{id: busId}}).then(response => {
-                console.log(response)
-                if(!response){
-                    return res.send({ 
+
+            await Bus.findOne({where: {id: busId}}).then(async bus => {
+                if (!bus) {
+                    return res.send({
                         success: false,
                         data: "Bus not found"
-                    }); 
+                    });
+                } else {
+                    await Passenger.findAndCountAll({where: {busId: busId}}).then(passengers => {
+                        console.log(passengers)
+                        if (passengers.count > bus.seatAmmount) {
+                            return res.send({
+                                success: false,
+                                data: "Bus has reached its maximum capacity"
+                            });
+                        }
+                    })
                 }
             });
 
-            await Passenger.findOne({where:{CPF: CPF}}).then(response => {
-                console.log(response)
-                if(response){
-                    return res.send({ 
+            await Passenger.findOne({where: {CPF: CPF}}).then(response => {
+                if (response) {
+                    return res.send({
                         success: false,
                         data: "Passenger already created"
-                    }); 
+                    });
                 }
             });
 
-            await Passenger.create({ 
+            await Passenger.create({
                 CPF: CPF,
                 age: age,
-                name: name, 
+                name: name,
                 busId: busId
             });
-            res.send({ 
+            res.send({
                 success: true,
                 data: "Passenger created"
             });
-        }catch (err){
+        } catch (err) {
             return res.status(400).json({
                 error: err
             });
@@ -86,7 +95,6 @@ module.exports = {
                 CPF: req.params.CPF
             }
         }).then(async result => {
-            console.log(result)
             if (result){
                 result.destroy();
                 res.send({ 
