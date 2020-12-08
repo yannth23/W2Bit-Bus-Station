@@ -2,10 +2,18 @@
   "name": "W2Bit-Bus-Station",
   "version": "1.0.0",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "sequelize-cli": "^6.2.0"
+  },
+  "scripts": {
+    "start": "node app.js"
   },
   "devDependencies": {
     "sequelize": "^6.3.5"
+  },
+  "engines": {
+    "node": "11.10.1"
   }
 }
