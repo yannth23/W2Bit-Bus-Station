@@ -10,7 +10,7 @@ module.exports = {
         } = req.body;
         try {
             if (busId == undefined) {
-                return res.send({
+                return res.status(400).send({
                     success: false,
                     data: "bus parameter must be passed"
                 });
@@ -18,7 +18,7 @@ module.exports = {
 
             await Bus.findOne({where: {id: busId}}).then(async bus => {
                 if (!bus) {
-                    return res.send({
+                    return res.status(400).send({
                         success: false,
                         data: "Bus not found"
                     });
@@ -26,7 +26,7 @@ module.exports = {
                     await Passenger.findAndCountAll({where: {busId: busId}}).then(passengers => {
                         console.log(passengers)
                         if (passengers.count > bus.seatAmmount) {
-                            return res.send({
+                            return res.status(400).send({
                                 success: false,
                                 data: "Bus has reached its maximum capacity"
                             });
@@ -37,7 +37,7 @@ module.exports = {
 
             await Passenger.findOne({where: {CPF: CPF}}).then(response => {
                 if (response) {
-                    return res.send({
+                    return res.status(400).send({
                         success: false,
                         data: "Passenger already created"
                     });
@@ -55,7 +55,7 @@ module.exports = {
                 data: "Passenger created"
             });
         } catch (err) {
-            return res.status(400).json({
+            return res.status(400).send({
                 error: err
             });
         }
@@ -82,7 +82,7 @@ module.exports = {
                     data: 'Passenger updated'
                 });
             }else{
-                res.send({ 
+                res.status(400).send({
                     success: false,
                     data: 'Passenger not found'
                 });
@@ -102,7 +102,7 @@ module.exports = {
                     data: 'Passenger deleted'
                 });
             }else{
-                res.send({ 
+                res.status(400).send({
                     success: false,
                     data: 'Passenger not found'
                 });

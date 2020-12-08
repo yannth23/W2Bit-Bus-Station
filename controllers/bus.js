@@ -11,14 +11,14 @@ module.exports = {
         } = req.body;
         try {
             if (userId == undefined){
-                return res.send({ 
+                return res.status(400).send({
                     success: false,
                     data: "user parameter must be passed"
                 }); 
             }
             await User.findOne({where:{id: userId}}).then(response => {
                 if(!response){
-                    return res.send({ 
+                    return res.status(400).send({
                         success: false,
                         data: "User not found"
                     }); 
@@ -37,8 +37,9 @@ module.exports = {
                 data: "Bus created"
             });
         }catch (err){
-            return res.status(400).json({
-                error: err
+            return res.status(400).send({
+                success: true,
+                data: "Bus already exists"
             });
         }
     },
@@ -71,7 +72,7 @@ module.exports = {
                     data: 'bus updated'
                 });
             }else{
-                res.send({ 
+                res.status(400).send({
                     success: false,
                     data: 'bus not found'
                 });
@@ -92,7 +93,7 @@ module.exports = {
                     data: 'bus deleted'
                 });
             }else{
-                res.send({ 
+                res.status(400).send({
                     success: false,
                     data: 'bus not found'
                 });

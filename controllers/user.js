@@ -12,9 +12,9 @@ module.exports = {
         } = req.body;
 
         if (password !== confirmPassword){
-            return res.send({ 
+            return res.status(400).send({
                 success: false,
-                data: "the confirm password must be equal to the password"
+                data: " confirmation password must be equal to the password"
             });
         }
 
